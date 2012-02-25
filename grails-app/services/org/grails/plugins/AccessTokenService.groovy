@@ -1,20 +1,25 @@
 package org.grails.plugins
 
 import grails.converters.JSON
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 class AccessTokenService {
 
     static transactional = true
 
     String generateAccessToken(String code) {
+        String clientId = ConfigurationHolder.config.grails.plugins.googlePlus.clientId
+        String clientSecret = ConfigurationHolder.config.grails.plugins.googlePlus.clientSecret
+        String redirectUri = ConfigurationHolder.config.grails.plugins.googlePlus.redirectUri
+
         StringBuilder sb = new StringBuilder("code=");
         sb.append(URLEncoder.encode(code, "UTF-8"));
         sb.append("&client_id=");
-        sb.append(URLEncoder.encode("188806017778-omt5riisuev1ogqghupqgojmc7jdu25c.apps.googleusercontent.com", "UTF-8"));
+        sb.append(URLEncoder.encode(clientId, "UTF-8"));
         sb.append("&client_secret=");
-        sb.append(URLEncoder.encode("dZb8-ccIq3WitqVhd1nSc5Up", "UTF-8"));
+        sb.append(URLEncoder.encode(clientSecret, "UTF-8"));
         sb.append("&redirect_uri=");
-        sb.append(URLEncoder.encode("http://localhost:8080/SampleApp/util", "UTF-8"));
+        sb.append(URLEncoder.encode(redirectUri, "UTF-8"));
         sb.append("&grant_type=");
         sb.append(URLEncoder.encode('authorization_code', "UTF-8"));
 

@@ -13,7 +13,7 @@ class GooglePlusService {
 
     static transactional = true
 
-    public String accessToken = 'ya29.AHES6ZTVl8pWlBmc4WH3G77rHgiHW6pFj8zerYVDiGCiQw'
+    public String accessToken = 'demo'
 
     private static final String BASE_URL = "https://www.googleapis.com/plus/"
 
