@@ -1,6 +1,7 @@
 package org.grails.plugins.googlePlus.Person
 
 public enum ObjectType {
+
     PERSON('person'),
     PAGE('page')
 
