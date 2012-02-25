@@ -22,6 +22,7 @@ class AccessTokenService {
 
         URL url = new URL(URL_TO_REQUEST_TOKEN);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        String accessToken
         try {
             connection.setRequestMethod("POST");
             connection.doOutput = true
@@ -34,11 +35,11 @@ class AccessTokenService {
             log.debug("Response code ${connection.responseCode} , Message : ${connection.responseMessage}")
             String resultData = connection.content.text
             def responseJson = JSON.parse(resultData)
-            return responseJson?.access_token
+            accessToken = responseJson?.access_token
         }
         catch (Exception e) {
             e.printStackTrace()
         }
-
+        accessToken
     }
 }
