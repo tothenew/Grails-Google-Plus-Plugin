@@ -1,52 +1,41 @@
 package org.grails.plugins
 
-import org.grails.plugins.googlePlus.GooglePlusData
-import org.grails.plugins.googlePlus.Person.Person
-import java.security.PublicKey
-import org.grails.plugins.googlePlus.People
 import grails.converters.JSON
-import org.grails.plugins.googlePlus.Person.Image
-import org.grails.plugins.googlePlus.Person.Name
+import org.grails.plugins.googlePlus.AccessTokenData
 import org.grails.plugins.googlePlus.GooglePlusException
 import org.grails.plugins.googlePlus.Person.GooglePlusUtil
+import org.grails.plugins.googlePlus.Person.Person
 
 class GooglePlusService {
-
     static transactional = false
 
-    public String accessToken = 'demo'
-
+//    private static final googleProfileUrl = "https://www.googleapis.com/oauth2/v1/userinfo"
+    private static final googleProfileUrl = "https://www.googleapis.com/oauth2/v1/userinfo"
     private static final String BASE_URL = "https://www.googleapis.com/plus/"
+    public String accessToken
 
-
-    GooglePlusData getAccessToken() {
-        GooglePlusData googlePlusData = new GooglePlusData(accessToken: accessToken)
-        return googlePlusData
+    public AccessTokenData getAccessToken() {
+        AccessTokenData accessTokenData = new AccessTokenData(accessToken: accessToken)
+        return accessTokenData
     }
 
-    String getAuthorizationUrl() {
-        return GooglePlusUtil.authorizationUrl
+    public String getAuthorizationUrl() {
+        GooglePlusUtil.authorizationUrl
     }
-
-    void setAccessToken(String accessToken) {
-        this.accessToken = accessToken
-    }
-
 
     public Person getCurrentUserProfile() {
         Person person
         try {
-            URL url = new URL("https://www.googleapis.com/oauth2/v1/userinfo?access_token=${accessToken}")
+            URL url = new URL("https://www.googleapis.com/plus/v1/people/me?access_token=${this.accessToken}")
+//            URL url = new URL(googleProfileUrl + "?access_token=${accessToken}")
             def jsonString = JSON.parse(url?.text)
+            println "URL : " + url.toString()
+            println "JSON : " + jsonString
+
             person = Person.parseJSONForPerson(jsonString)
         } catch (GooglePlusException e) {
             e.printStackTrace()
         }
         return person
-    }
-
-    public People getPersonsList() {
-        People people = new People()
-        return people
     }
 }

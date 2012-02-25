@@ -1,9 +1,8 @@
 package org.grails.plugins.googlePlus
 
-class GooglePlusException extends Exception {
+class GooglePlusException extends RuntimeException {
 
-    private static final long serialVersionUID = -5070446410644711801L;
-
+    private static final long serialVersionUID = -553433433711801L;
 
     def result
 

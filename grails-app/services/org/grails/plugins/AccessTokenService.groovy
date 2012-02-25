@@ -4,47 +4,70 @@ import grails.converters.JSON
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 class AccessTokenService {
-
+    private final String URL_TO_REQUEST_TOKEN = 'https://accounts.google.com/o/oauth2/token'
     static transactional = false
 
     String generateAccessToken(String code) {
-        String clientId = ConfigurationHolder.config.grails.plugins.googlePlus.clientId
-        String clientSecret = ConfigurationHolder.config.grails.plugins.googlePlus.clientSecret
-        String callBackUrl = ConfigurationHolder.config.grails.plugins.googlePlus.callBackUrl
-
-        StringBuilder sb = new StringBuilder("code=");
-        sb.append(URLEncoder.encode(code, "UTF-8"));
-        sb.append("&client_id=");
-        sb.append(URLEncoder.encode(clientId, "UTF-8"));
-        sb.append("&client_secret=");
-        sb.append(URLEncoder.encode(clientSecret, "UTF-8"));
-        sb.append("&redirect_uri=");
-        sb.append(URLEncoder.encode(callBackUrl, "UTF-8"));
-        sb.append("&grant_type=");
-        sb.append(URLEncoder.encode('authorization_code', "UTF-8"));
-
-        String URL_TO_REQUEST_TOKEN = 'https://accounts.google.com/o/oauth2/token'
-
-        URL url = new URL(URL_TO_REQUEST_TOKEN);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        String queryString = generateQueryString(code)
         String accessToken
         try {
-            connection.setRequestMethod("POST");
-            connection.doOutput = true
-            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            connection.setRequestProperty("Content-Length", "" + sb.toString().length());
-            connection.setRequestProperty("Host", "accounts.google.com");
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(connection.getOutputStream());
-            outputStreamWriter.write(sb.toString());
-            outputStreamWriter.flush();
-            log.debug("Response code ${connection.responseCode} , Message : ${connection.responseMessage}")
-            String resultData = connection.content.text
-            def responseJson = JSON.parse(resultData)
-            accessToken = responseJson?.access_token
+            HttpURLConnection connection = loadConnectionSettings(queryString.size())
+            postAccessTokenRequest(connection, queryString)
+            accessToken = extractAccessToken(connection)
         }
         catch (Exception e) {
             e.printStackTrace()
         }
        return  accessToken
+    }
+
+    private String extractAccessToken(HttpURLConnection connection) {
+        String accessToken
+        String resultData = connection.content.text
+        def responseJson = JSON.parse(resultData)
+        accessToken = responseJson?.access_token
+        return accessToken
+    }
+
+    private postAccessTokenRequest(HttpURLConnection connection, String queryString) {
+        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(connection.getOutputStream());
+        outputStreamWriter.write(queryString);
+        outputStreamWriter.flush()
+        log.debug("Response code ${connection.responseCode} , Message : ${connection.responseMessage}")
+    }
+
+    private HttpURLConnection loadConnectionSettings(Long querySize) {
+        URL url = new URL(URL_TO_REQUEST_TOKEN)
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.doOutput = true
+        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        connection.setRequestProperty("Content-Length", "" + querySize);
+        connection.setRequestProperty("Host", "accounts.google.com")
+        return connection
+    }
+
+    private String generateQueryString(String code) {
+        String clientId = ConfigurationHolder.config.grails.plugins.googlePlus.clientId
+        String clientSecret = ConfigurationHolder.config.grails.plugins.googlePlus.clientSecret
+        String callBackUrl = ConfigurationHolder.config.grails.plugins.googlePlus.callBackUrl
+
+        StringBuilder queryString = new StringBuilder("code=")
+        queryString.with{
+            append(code);
+            append("&client_id=");
+            append(encodeInUTF8(clientId));
+            append("&client_secret=");
+            append(encodeInUTF8(clientSecret));
+            append("&redirect_uri=");
+            append(encodeInUTF8(callBackUrl));
+            append("&grant_type=");
+            append(encodeInUTF8('authorization_code'))
+        }
+        return queryString.toString()
+    }
+
+    private String encodeInUTF8(String code) {
+        return URLEncoder.encode(code, "UTF-8")
     }
 }

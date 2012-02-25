@@ -26,17 +26,18 @@ class Person {
     static Person parseJSONForPerson(def json) {
         Person person = new Person()
         person.id = json?.id
-        person.displayName = json?.name
+        person.displayName = json?.displayName
         person.gender = json?.gender
         person.locale = json?.locale
-        person.url = json?.link
+        person.aboutMe = json?.aboutMe
+        person.url = json?.url
         Image image = new Image()
-        image.url = json?.picture
+        image.url = json?.image?.url
         person.image = image
         Name name = new Name()
-        name.familyName = json?.family_name
+        name.familyName = json?.name?.familyName
         name.givenName = json?.given_name
-        name.middleName = json?.middle_name
+        name.middleName = json?.name?.givenName
         person.name = name
         return person
     }
