@@ -5,12 +5,12 @@ import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 class AccessTokenService {
 
-    static transactional = true
+    static transactional = false
 
     String generateAccessToken(String code) {
         String clientId = ConfigurationHolder.config.grails.plugins.googlePlus.clientId
         String clientSecret = ConfigurationHolder.config.grails.plugins.googlePlus.clientSecret
-        String redirectUri = ConfigurationHolder.config.grails.plugins.googlePlus.redirectUri
+        String callBackUrl = ConfigurationHolder.config.grails.plugins.googlePlus.callBackUrl
 
         StringBuilder sb = new StringBuilder("code=");
         sb.append(URLEncoder.encode(code, "UTF-8"));
@@ -19,7 +19,7 @@ class AccessTokenService {
         sb.append("&client_secret=");
         sb.append(URLEncoder.encode(clientSecret, "UTF-8"));
         sb.append("&redirect_uri=");
-        sb.append(URLEncoder.encode(redirectUri, "UTF-8"));
+        sb.append(URLEncoder.encode(callBackUrl, "UTF-8"));
         sb.append("&grant_type=");
         sb.append(URLEncoder.encode('authorization_code', "UTF-8"));
 
@@ -45,6 +45,6 @@ class AccessTokenService {
         catch (Exception e) {
             e.printStackTrace()
         }
-        accessToken
+       return  accessToken
     }
 }

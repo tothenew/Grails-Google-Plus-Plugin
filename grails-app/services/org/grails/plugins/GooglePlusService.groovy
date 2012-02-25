@@ -8,10 +8,11 @@ import grails.converters.JSON
 import org.grails.plugins.googlePlus.Person.Image
 import org.grails.plugins.googlePlus.Person.Name
 import org.grails.plugins.googlePlus.GooglePlusException
+import org.grails.plugins.googlePlus.Person.GooglePlusUtil
 
 class GooglePlusService {
 
-    static transactional = true
+    static transactional = false
 
     public String accessToken = 'demo'
 
@@ -21,6 +22,10 @@ class GooglePlusService {
     GooglePlusData getAccessToken() {
         GooglePlusData googlePlusData = new GooglePlusData(accessToken: accessToken)
         return googlePlusData
+    }
+
+    String getAuthorizationUrl() {
+        return GooglePlusUtil.authorizationUrl
     }
 
     void setAccessToken(String accessToken) {
@@ -44,10 +49,4 @@ class GooglePlusService {
         People people = new People()
         return people
     }
-
-//    def apiCall(String accessToken) {
-//
-//
-//        URL url = new URL("${BASE_URL}${url}&acce")
-//    }
 }

@@ -1,15 +1,14 @@
 package org.grails.plugins
+
+import org.grails.plugins.googlePlus.Person.GooglePlusUtil
+
 class AccessTagLib {
 
     static namespace = "gp"
 
     def registerOnGooglePlus = {attrs ->
-        String scope = attrs['googlePlusScope'] ?: "https://www.googleapis.com/auth/plus.me"
-        String callbackUrl = attrs['callbackUrl']
-        String clientId = attrs['clientId']
         String buttonName = attrs['buttonName'] ?: 'Connect_to_Google+'
-        String authorizeUrl = "https://accounts.google.com/o/oauth2/auth?scope=${scope}&redirect_uri=${callbackUrl}&response_type=code&client_id=${clientId}&access_type=offline"
+        String authorizeUrl = GooglePlusUtil.getAuthorizationUrl()
         out << "<input type='button' value=${buttonName} onclick=\"location.href='${authorizeUrl}'\">"
     }
-
 }
