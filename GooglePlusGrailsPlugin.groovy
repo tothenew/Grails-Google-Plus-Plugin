@@ -13,9 +13,8 @@ class GooglePlusGrailsPlugin {
     // TODO Fill in these fields
     def author = "Vishal Sahu"
     def authorEmail = ""
-    def title = "Use to Integrate Google Plus with Grails application"
-    def description = '''Brief description of the plugin.
-'''
+    def title = "Integrate Google Plus with Grails application"
+    def description = '''Use to integreate Google plus with the Grails application and make API calls for fetching google plus data.'''
 
     // URL to the plugin's documentation
     def documentation = "http://grails.org/plugin/google-plus"
