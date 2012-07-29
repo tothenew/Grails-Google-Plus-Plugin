@@ -4,6 +4,9 @@ grails.project.test.reports.dir = "target/test-reports"
 grails.project.target.level = 1.6
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
+grails.plugin.repos.distribution.myRepo ="https://github.com/IntelliGrape/Grails-Google-Plus-Plugin.git"
+grails.project.repos.myRepo.url ="https://github.com/IntelliGrape/Grails-Google-Plus-Plugin.git"
+
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
     inherits("global") {
@@ -12,6 +15,7 @@ grails.project.dependency.resolution = {
     }
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     repositories {
+        grailsRepo "https://github.com/IntelliGrape/Grails-Google-Plus-Plugin.git"
         grailsCentral()
         // uncomment the below to enable remote dependency resolution
         // from public Maven repositories

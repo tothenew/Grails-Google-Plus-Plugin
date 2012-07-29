@@ -13,7 +13,7 @@ class GooglePlusGrailsPlugin {
     // TODO Fill in these fields
     // TODO Fill in these fields
     def author = "Vishal Sahu"
-    def authorEmail = ""
+    def authorEmail = "vishal@intelligrape.com"
     def title = "Integrate Google Plus with Grails application"
     def description = '''Use to integreate Google plus with the Grails application and make API calls for fetching google plus data.'''
 
