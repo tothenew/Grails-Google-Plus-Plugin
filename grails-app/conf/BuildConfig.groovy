@@ -5,7 +5,6 @@ grails.project.target.level = 1.6
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
 grails.plugin.repos.distribution.myRepo ="https://github.com/IntelliGrape/Grails-Google-Plus-Plugin.git"
-grails.project.repos.myRepo.url ="https://github.com/IntelliGrape/Grails-Google-Plus-Plugin.git"
 
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
@@ -34,8 +33,7 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        build(":tomcat:$grailsVersion",
-              ":release:1.0.0") {
+        build(":tomcat:$grailsVersion") {
             export = false
         }
     }
