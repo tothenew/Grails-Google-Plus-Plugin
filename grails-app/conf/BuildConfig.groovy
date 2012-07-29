@@ -15,7 +15,8 @@ grails.project.dependency.resolution = {
     }
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     repositories {
-        grailsRepo "https://github.com/IntelliGrape/Grails-Google-Plus-Plugin.git"
+//        grailsRepo "https://github.com/IntelliGrape/Grails-Google-Plus-Plugin.git"
+        grailsRepo "http://grails.org/plugins"
         grailsCentral()
         // uncomment the below to enable remote dependency resolution
         // from public Maven repositories
